@@ -8,10 +8,24 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
   <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-  <div id="app">
+  <div id="intro" class="screen">
+    <div class="intro-content">
+      <h1>Интерактивный маршрут «Город будущего»</h1>
+      <p>Этот мини-проект предлагает взглянуть на Москву глазами архитекторов-авангардистов.</p>
+      <p>Тебе предстоит пройти несколько точек маршрута и выбрать принципы, по которым должен строиться новый город.</p>
+      <p>Каждый выбор открывает исторический контекст и идеи эпохи.</p>
+
+      <button id="startBtn" onclick="startGame()">
+        Начать игру
+      </button>
+    </div>
+  </div>
+
+  <div id="app" class="screen" style="display: none;">
     <h1 id="title">Город будущего</h1>
     <p id="location"></p>
     <p id="text"></p>

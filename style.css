@@ -2,27 +2,42 @@ body {
     margin: 0;
     background: #f5f5f5;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
   }
-  
+
   #app {
     padding: 24px;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.2s forwards;
   }
-  
+
   h1 {
     font-size: 28px;
     text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 0.4s forwards;
   }
-  
+
   #location {
     font-weight: bold;
     margin-top: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 0.6s forwards;
   }
-  
+
   #text {
     margin: 20px 0;
     font-size: 18px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 0.8s forwards;
+    transition: all 0.3s ease;
   }
-  
+
   button {
     width: 100%;
     padding: 14px;
@@ -31,15 +46,214 @@ body {
     border: 2px solid black;
     background: white;
     cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 1s forwards;
   }
-  
+
+  button:nth-child(1) { animation-delay: 1s; }
+  button:nth-child(2) { animation-delay: 1.1s; }
+  button:nth-child(3) { animation-delay: 1.2s; }
+
   button:hover {
     background: black;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
-  
+
+  button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
   #nextBtn {
     margin-top: 20px;
     background: black;
     color: white;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+  }
+
+  /* Стили для начального экрана */
+  #intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  }
+
+  .intro-content {
+    max-width: 500px;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: introFadeIn 0.8s ease-out 0.3s forwards;
+  }
+
+  .intro-content h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #333;
+    text-transform: none;
+  }
+
+  .intro-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    color: #666;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .intro-content p:nth-child(2) { animation: fadeInUp 0.6s ease-out 0.8s forwards; }
+  .intro-content p:nth-child(3) { animation: fadeInUp 0.6s ease-out 1s forwards; }
+  .intro-content p:nth-child(4) { animation: fadeInUp 0.6s ease-out 1.2s forwards; }
+
+  #startBtn {
+    margin-top: 40px;
+    padding: 16px 32px;
+    font-size: 18px;
+    font-weight: bold;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.6s ease-out 1.4s forwards;
+  }
+
+  #startBtn:hover {
+    background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  }
+
+  #startBtn:active {
+    transform: translateY(0);
+  }
+
+  .screen {
+    transition: all 0.5s ease;
+  }
+
+  .screen-transition-out {
+    opacity: 0 !important;
+    transform: scale(0.95) !important;
+  }
+
+  .screen-transition-in {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: screenFadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes screenFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes introFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #nextBtn.show {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  /* Анимации появления контента */
+  .content-enter {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+
+  .content-exit {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeOutDown 0.3s ease-in forwards;
+  }
+
+  /* Ключевые кадры анимаций */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeOutDown {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+
+  /* Анимация для изменения текста */
+  .text-change {
+    animation: textPulse 0.4s ease-out;
+  }
+
+  @keyframes textPulse {
+    0% {
+      opacity: 0.7;
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Анимация для кнопок при выборе */
+  .button-selected {
+    animation: buttonSelect 0.4s ease-out;
+  }
+
+  @keyframes buttonSelect {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.98);
+    }
+    100% {
+      transform: scale(1);
+    }
   }

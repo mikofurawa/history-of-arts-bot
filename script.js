@@ -9,24 +9,6 @@ const steps = [
       ]
     },
     {
-      location: "📍 Клуб рабочих",
-      text: "Здание для собраний и досуга. Что важнее?",
-      options: [
-        { text: "Польза для людей", result: "Именно так. Архитектура служит обществу." },
-        { text: "Монументальность", result: "Монументальность не равна прогрессу." },
-        { text: "Украшения", result: "Украшения не делают здание полезным." }
-      ]
-    },
-    {
-      location: "📍 Улица будущего",
-      text: "Как должна выглядеть улица нового города?",
-      options: [
-        { text: "Рационально", result: "Чёткая структура — основа нового мышления." },
-        { text: "Живописно", result: "Живописность — не цель авангарда." },
-        { text: "Исторически", result: "Авангард смотрит в будущее, а не в прошлое." }
-      ]
-    },
-    {
       location: "📍 Дом культуры",
       text: "Для чего существует это здание?",
       options: [
@@ -45,30 +27,12 @@ const steps = [
       ]
     },
     {
-      location: "📍 Фабрика-кухня",
-      text: "Здание для общественного питания. Что в нём главное?",
-      options: [
-        { text: "Эффективность", result: "Именно так. Авангард оптимизирует бытовые процессы." },
-        { text: "Роскошь", result: "Роскошь не нужна в социалистическом быту." },
-        { text: "Традиционная кухня", result: "Традиции не годятся для нового образа жизни." }
-      ]
-    },
-    {
       location: "📍 Жилой комплекс",
       text: "Как должна быть организована квартира?",
       options: [
         { text: "Свободная планировка", result: "Да. Гибкость пространства — принцип Баухауза." },
         { text: "Фиксированные комнаты", result: "Старые перегородки ограничивают функциональность." },
         { text: "С большими залами", result: "Открытые пространства важны, но не за счёт комфорта." }
-      ]
-    },
-    {
-      location: "📍 Строительная площадка",
-      text: "Какие материалы использовать для будущего?",
-      options: [
-        { text: "Бетон и стекло", result: "Новые материалы — основа авангардной архитектуры." },
-        { text: "Кирпич и дерево", result: "Традиционные материалы не отвечают требованиям скорости." },
-        { text: "Мрамор и золото", result: "Роскошные материалы — пережиток прошлого." }
       ]
     },
     {
@@ -101,32 +65,110 @@ const steps = [
   ];
   
   let currentStep = 0;
-  
+  let gameStarted = false;
+
+  const introEl = document.getElementById("intro");
+  const appEl = document.getElementById("app");
   const locationEl = document.getElementById("location");
   const textEl = document.getElementById("text");
   const buttonsEl = document.getElementById("buttons");
   const nextBtn = document.getElementById("nextBtn");
 
+  function startGame() {
+    if (gameStarted) return;
+    gameStarted = true;
+
+    // Анимация перехода от intro к игре
+    introEl.classList.add('screen-transition-out');
+
+    setTimeout(() => {
+      introEl.style.display = 'none';
+      appEl.style.display = 'block';
+      appEl.classList.add('screen-transition-in');
+
+      setTimeout(() => {
+        appEl.classList.remove('screen-transition-in');
+        renderStep();
+      }, 600);
+    }, 300);
+  }
+
+  // Экспортируем функцию в глобальную область
+  window.startGame = startGame;
+
 function renderStep() {
     const step = steps[currentStep];
-  
-    locationEl.innerText = step.location;
-    textEl.innerText = step.text;
-    buttonsEl.innerHTML = "";
-    nextBtn.style.display = "none";
-  
-    step.options.forEach(option => {
-      const btn = document.createElement("button");
-      btn.innerText = option.text;
-      btn.onclick = () => selectOption(option.result);
-      buttonsEl.appendChild(btn);
-    });
+
+    // Добавляем класс выхода для текущего контента
+    locationEl.classList.add('content-exit');
+    textEl.classList.add('content-exit');
+    buttonsEl.classList.add('content-exit');
+
+    setTimeout(() => {
+      locationEl.innerText = step.location;
+      textEl.innerText = step.text;
+      buttonsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      nextBtn.classList.remove('show');
+
+      // Убираем классы выхода и добавляем входа
+      locationEl.classList.remove('content-exit');
+      textEl.classList.remove('content-exit');
+      buttonsEl.classList.remove('content-exit');
+
+      locationEl.classList.add('content-enter');
+      textEl.classList.add('content-enter');
+      buttonsEl.classList.add('content-enter');
+
+      step.options.forEach((option, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = option.text;
+        btn.style.animationDelay = `${1 + index * 0.1}s`;
+        btn.onclick = () => selectOption(option.result);
+        buttonsEl.appendChild(btn);
+      });
+
+      // Убираем классы входа через некоторое время
+      setTimeout(() => {
+        locationEl.classList.remove('content-enter');
+        textEl.classList.remove('content-enter');
+        buttonsEl.classList.remove('content-enter');
+      }, 600);
+    }, 300);
   }
   
   function selectOption(resultText) {
-    textEl.innerText = resultText;
-    buttonsEl.innerHTML = "";
-    nextBtn.style.display = "block";
+    // Добавляем анимацию для кнопок при выборе
+    const buttons = buttonsEl.querySelectorAll('button');
+    buttons.forEach(btn => {
+      btn.classList.add('button-selected');
+      setTimeout(() => btn.classList.remove('button-selected'), 400);
+    });
+
+    // Плавная смена текста с анимацией
+    textEl.classList.add('text-change');
+    setTimeout(() => {
+      textEl.innerText = resultText;
+      textEl.classList.remove('text-change');
+      textEl.classList.add('content-enter');
+
+      setTimeout(() => {
+        textEl.classList.remove('content-enter');
+      }, 600);
+    }, 200);
+
+    // Плавное исчезновение кнопок
+    buttonsEl.classList.add('content-exit');
+    setTimeout(() => {
+      buttonsEl.innerHTML = "";
+      buttonsEl.classList.remove('content-exit');
+
+      // Плавное появление кнопки "Дальше"
+      setTimeout(() => {
+        nextBtn.style.display = "block";
+        nextBtn.classList.add('show');
+      }, 300);
+    }, 300);
   }
   
   function nextStep() {
@@ -139,12 +181,32 @@ function renderStep() {
   }
   
   function finishGame() {
-    locationEl.innerText = "ГОТОВО";
-    textEl.innerText =
-      "Ты прошёл город будущего глазами авангарда. Архитектура здесь — не украшение, а инструмент мышления.";
-    buttonsEl.innerHTML = "";
-    nextBtn.style.display = "none";
+    // Анимация выхода текущего контента
+    locationEl.classList.add('content-exit');
+    textEl.classList.add('content-exit');
+    buttonsEl.classList.add('content-exit');
+
+    setTimeout(() => {
+      locationEl.innerText = "ГОТОВО";
+      textEl.innerText =
+        "Ты прошёл город будущего глазами авангарда. Архитектура здесь — не украшение, а инструмент мышления.";
+      buttonsEl.innerHTML = "";
+      nextBtn.style.display = "none";
+      nextBtn.classList.remove('show');
+
+      // Анимация входа финального контента
+      locationEl.classList.remove('content-exit');
+      textEl.classList.remove('content-exit');
+      buttonsEl.classList.remove('content-exit');
+
+      locationEl.classList.add('content-enter');
+      textEl.classList.add('content-enter');
+
+      setTimeout(() => {
+        locationEl.classList.remove('content-enter');
+        textEl.classList.remove('content-enter');
+      }, 600);
+    }, 300);
   }
   
-  // запуск
-  renderStep();
+  // игра запускается через startGame()
