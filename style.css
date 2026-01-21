@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    background: #f5f5f5;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  #app {
+    padding: 24px;
+  }
+  
+  h1 {
+    font-size: 28px;
+    text-transform: uppercase;
+  }
+  
+  #location {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
+  #text {
+    margin: 20px 0;
+    font-size: 18px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    background: white;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background: black;
+    color: white;
+  }
+  
+  #nextBtn {
+    margin-top: 20px;
+    background: black;
+    color: white;
+  }
